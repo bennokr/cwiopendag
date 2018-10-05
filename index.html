@@ -10,11 +10,13 @@
 
         <title>Wie is Het?</title>
         <style>
-        #main { height:100%; }
+        body {
+            background: #ede7e0;
+        }
         #face_container {
             position:absolute;
             width:100%;
-            max-width:900px;
+            max-width:650px;
             height: 66%;
             overflow-y:scroll;
         }
@@ -24,16 +26,20 @@
             height:33%;
             overflow-y:scroll;
             width:100%;
-            max-width:900px;
+            max-width:500px;
             line-height:38px;
+        }
+        #conversation>div {
+            margin: 0 .5em;
         }
         .grid {
           display: grid;
           grid-gap: 5px;
-          grid-template-columns: repeat(auto-fill, 186px);
+          grid-template-columns: repeat(auto-fill, 150px);
         }
         .grid>* {
           border: 1px solid black;
+          height:150px;
         }
         .grid ul {
         	margin: .2em;
@@ -42,7 +48,10 @@
         .grid li {
             margin: 0;
         }
-        input,select { margin:0; }
+        input,select,.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+            margin:0; 
+            background-color:white; 
+        }
         input[disabled] {
             background:grey;
         }
@@ -53,7 +62,7 @@
             float:right;
             clear:both; 
             padding:0 .5em;
-            background: #cdc;
+            background: #c7f2be;
             border:1px solid #aca;
             border-radius:.5em;
             box-shadow: 2px 2px 1px grey;
@@ -62,29 +71,51 @@
             float:left; 
             padding:0 .5em;
             clear:both; 
-            background: #fed;
+            background: #fafbfc;
             border:1px solid #cba; 
             border-radius:.5em;
             box-shadow: 2px 2px 1px grey;
+        }
+        .face {
+            background-image: url('back.png');
+            background-size:cover;
+            position:relative;
+        }
+        .face ul {
+            
+        }
+        .face img {
+            position: absolute;
+            width:100%;
+        }
+        .tick {
+            position:absolute;bottom:0px; width:20px;height:20px;background:black;
+            visibility: hidden;
+        }
+        .you-tick {
+            left:0px;
+            border-top-right-radius: 10px;
+        }
+        .my-tick {
+            right:0px;
+            border-top-left-radius: 10px;
         }
 	    </style>
 
         <script id="face_grid_tmpl" type="x-tmpl-mustache">
     		<div class="grid">
     			{{#.}}
-    			<div data-i="{{i}}">
-    				<ul>
-    					{{#attrs}}
-    					<li>{{#props}}{{.}}{{/props}} {{type}}</li>
-    					{{/attrs}}
-    				</ul>
+    			<div data-i="{{i}}"  class="face">
+                    {{#attrs}}<img src="{{img}}" />{{/attrs}}
+                    <div class="tick you-tick">&nbsp;</div>
+                    <div class="tick my-tick">&nbsp;</div>
     			</div>
     			{{/.}}
     		</div>
 		</script>
         <script id="player_tmpl" type="x-tmpl-mustache">
             <div class="player" id="current_player">
-            Heeft 'ie
+            Heeft 'ie {{det}}
             {{#props}}
                 <select id="prop_select">
                     {{#opts}}
@@ -106,10 +137,14 @@
             </div>
         </script>
         <script id="opponent_tmpl" type="x-tmpl-mustache">
-            <div class="opponent" id="current_opponent">
-            Heeft 'ie {{.}}?
-            <input type="button" value="Ja" /> 
-            <input type="button" value="Nee" />
+            <div class="player" id="current_player">
+                <input type="button" value="Ja" /> 
+                <input type="button" value="Nee" />
+            </div>
+        </script>
+        <script id="q_tmpl" type="x-tmpl-mustache">
+            <div class="{{side}}">
+            Heeft 'ie {{det}} {{prop}} {{attr}}?
             </div>
         </script>
 		<script type="text/javascript">

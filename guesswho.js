@@ -15,7 +15,7 @@ window.face = {};
 window.face_valid = {};
 window.attrs = {};
 window.q = {};
-window.n = 24;
+window.n = 12;
 
 window.opponent_choice = null;
 
@@ -44,7 +44,11 @@ function init() {
         });
         if (Math.random() < data[key].p) { // attribute probability
           const index = Math.floor(Math.random() * options.length);
-          face_obj.attrs.push({'type':key, 'props':options[index].props});
+          face_obj.attrs.push({
+            'type':key, 
+            'props':options[index].props,
+            'img':options[index].img
+          });
         }
       });
       const exists = Object.keys(window.face).some(function(i){ 
@@ -85,50 +89,57 @@ function opponent_turn() {
   var propattr_entropy = {}
   var n_game = sum(Object.values(window.face_valid).map(function(x){return x?1:0 }))
   if (n_game == 1) {
-    $('#conversation').append('Ik win!');
-    Object.keys(window.face).forEach(function(i){
-      if (window.face_valid[i]) {
-        $('[data-i="'+i+'"]').css('background','green');
-      }
-    });
+    
+    // OPPONENT WINS
+    console.log('ik win')
+
   } else {
     Object.keys(propattr_counts).forEach(function(a){
       propattr_entropy[a] = -Math.abs( propattr_counts[a] - n_game/2 );
     })
     var propattr = argmax(propattr_entropy);
-    $('#conversation').append(template('opponent_tmpl', propattr ));
-    $('#current_opponent>input').click(function(e){
-      var ans = (e.target.value == 'Ja');
+    propattr = propattr.split(' ');
+    if (propattr.length>1) {
+      var prop = propattr[0], attr = propattr[1]; 
+    } else {
+      var prop = null, attr = propattr[0];
+    }
 
-      // Update game board
-      propattr = propattr.split(' ');
-      if (propattr.length>1) {
-        var prop = propattr[0], attr = propattr[1]; 
-      } else {
-        var prop = null, attr = propattr[0]; 
-      }
-
-      // filter out faces without this att
-      Object.keys(window.face).forEach(function(i){
-        var face_match = false;
-        window.face[i].attrs.forEach(function(a){
-          var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
-          if (match) { face_match = true }
-        }) 
-        if (face_match != ans) {
-          window.face_valid[i] = false;
-          $('[data-i="'+i+'"]').css('background','grey');
-        }
-      })
-      $('#current_opponent').replaceWith($('<div class="opponent">Heeft \'ie '+prop+' '+attr+'?</div>'));
-      $('#conversation').append($('<div class="player">' + (ans? 'Ja' : 'nee') + '</div>'));  
-      $('#conversation').append($('<div id="current_player"></div>'));
+    setTimeout(function(){
+      $('#conversation').append(template('q_tmpl', 
+        {'side':'opponent', 'prop':prop, 'attr':attr} ));
+      $('#conversation').append(template('opponent_tmpl', null ));
       $('#conversation').stop().animate({
         scrollTop: $('#conversation')[0].scrollHeight
       }, 80);
+      $('#current_player>input').click(function(e){
+        // player answers opponents question
+        var ans = (e.target.value == 'Ja');
 
-      player_turn();
-    })
+        // Update game board
+        // filter out faces without this att
+        Object.keys(window.face).forEach(function(i){
+          var face_match = false;
+          window.face[i].attrs.forEach(function(a){
+            var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
+            if (match) { face_match = true }
+          }) 
+          if (face_match != ans) {
+            window.face_valid[i] = false;
+            $('[data-i="'+i+'"] > .you-tick').css('visibility','visible');
+          }
+        })
+        $('#current_player').replaceWith($('<div class="player">' + (ans? 'Ja' : 'Nee') + '</div>'));  
+        setTimeout(function(){
+          $('#conversation').append($('<div id="current_player"></div>'));
+          $('#conversation').stop().animate({
+            scrollTop: $('#conversation')[0].scrollHeight
+          }, 80);
+
+          player_turn();
+        }, 750);
+      })
+    }, 750);
   }
 }
 
@@ -165,19 +176,32 @@ function player_turn() {
   $('#conversation #vraag').on('click', function(){
     window.q = {};
     var prop = $('#prop_select').val(), attr = $('#attr_select').val();
-    $('#current_player').replaceWith(
-      $('<div class="player">Heeft \'ie ' + prop + ' ' + attr + '?</div>'));
+    $('#current_player').replaceWith(template('q_tmpl', 
+      {'side':'player', 'prop':prop, 'attr':attr}))
 
-    // answer
+    // opponent answers players question
     var ans = false;
     window.face[window.opponent_choice].attrs.forEach(function(a){
       var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
       if (match) { ans = true}
     });
-    $('#conversation').append($('<div class="opponent">' + (ans? 'Ja' : 'nee') + '</div>'));
-    $('#conversation').stop().animate({
-      scrollTop: $('#conversation')[0].scrollHeight
-    }, 80);
-    opponent_turn();
+    // show filtered faces
+    Object.keys(window.face).forEach(function(i){
+      var face_match = false;
+      window.face[i].attrs.forEach(function(a){
+        var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
+        if (match) { face_match = true }
+      }) 
+      if (face_match != ans) {
+        $('[data-i="'+i+'"] > .my-tick').css('visibility','visible');
+      }
+    })
+    setTimeout(function(){
+      $('#conversation').append($('<div class="opponent">' + (ans? 'Ja' : 'Nee') + '</div>'));
+      $('#conversation').stop().animate({
+        scrollTop: $('#conversation')[0].scrollHeight
+      }, 80);
+      opponent_turn();
+    }, 750);
   })
 }

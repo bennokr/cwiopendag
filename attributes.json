@@ -2,24 +2,25 @@
 	"ogen": {
 		"p":1,
 		"options": [
-			{"props":["blauwe"]}, 
-			{"props":["groene"]}, 
-			{"props":["bruine"]}
+			{"img":"blauwe-ogen.png", "props":["blauwe"]}, 
+			{"img":"groene-ogen.png", "props":["groene"]}, 
+			{"img":"bruine-ogen.png", "props":["bruine"]}
 		]
 	},
 	"mond": {
 		"p":1,
 		"options": [
-			{"props":["blije"]}, 
-			{"props":["verdrietige"]}
-		]
+			{"img":"blije-mond.png", "props":["blije"]}, 
+			{"img":"verdrietige-mond.png", "props":["verdrietige"]}
+		],
+		"det": "een"
 	},
 	"haar": {
 		"p": 0.5,
 		"options": [
-			{"props":["blond"]}, 
-			{"props":["bruin"]}, 
-			{"props":["zwart"]}
+			{"img":"blond-haar.png", "props":["blond"]}, 
+			{"img":"bruin-haar.png", "props":["bruin"]}, 
+			{"img":"zwart-haar.png", "props":["zwart"]}
 		]
 	}
 }
