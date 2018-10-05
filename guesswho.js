@@ -11,6 +11,8 @@ const histogram = function(a){ return a.reduce((h, v)=>{h[v]=h[v]+1||1; return h
 const argmax = function(a){ return Object.keys(a).reduce((x, y)=>(a[x] > a[y] ? x : y))};
 const sum = function(a){ return a.reduce((x, y)=>(x + y))};
 
+window.det = {};
+
 window.face = {};
 window.face_valid = {};
 window.attrs = {};
@@ -37,6 +39,7 @@ function init() {
       Object.keys(data).forEach(function(key) {
         const options = data[key].options; // attribute subtypes
         window.attrs[key] = (window.attrs[key] || {});
+        window.det[key] = data[key].det;
         options.forEach(function(option){
           option.props.forEach(function(prop){
             window.attrs[key][prop] = true;
@@ -65,6 +68,11 @@ function init() {
     console.log('attrs', window.attrs);
 
     $('#face_container').append(template('face_grid_tmpl', Object.values(window.face)));
+
+    $('.tick').on('click', function(e){
+      console.log(e.target);
+      $(e.target).css('background', 'green')
+    })
 
     player_turn();
   });
@@ -113,24 +121,24 @@ function opponent_turn() {
         scrollTop: $('#conversation')[0].scrollHeight
       }, 80);
       $('#current_player>input').click(function(e){
-        // player answers opponents question
-        var ans = (e.target.value == 'Ja');
-
-        // Update game board
-        // filter out faces without this att
-        Object.keys(window.face).forEach(function(i){
-          var face_match = false;
-          window.face[i].attrs.forEach(function(a){
-            var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
-            if (match) { face_match = true }
-          }) 
-          if (face_match != ans) {
-            window.face_valid[i] = false;
-            $('[data-i="'+i+'"] > .you-tick').css('visibility','visible');
-          }
-        })
-        $('#current_player').replaceWith($('<div class="player">' + (ans? 'Ja' : 'Nee') + '</div>'));  
         setTimeout(function(){
+          // player answers opponents question
+          var ans = (e.target.value == 'Ja');
+
+          // Update game board
+          // filter out faces without this att
+          Object.keys(window.face).forEach(function(i){
+            var face_match = false;
+            window.face[i].attrs.forEach(function(a){
+              var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
+              if (match) { face_match = true }
+            }) 
+            if (face_match != ans) {
+              window.face_valid[i] = false;
+              $('[data-i="'+i+'"] > .you-tick').css('background','red');
+            }
+          })
+          $('#current_player').replaceWith($('<div class="player">' + (ans? 'Ja' : 'Nee') + '</div>'));  
           $('#conversation').append($('<div id="current_player"></div>'));
           $('#conversation').stop().animate({
             scrollTop: $('#conversation')[0].scrollHeight
@@ -146,7 +154,7 @@ function opponent_turn() {
 function player_turn() {
   
   // Add attributes to dropdown
-  var q = {"ok":true, "attrs":{"opts":[]}};
+  var q = {"ok":true, "attrs":{"opts":[]}, "det":window.det[window.q.attr]};
   if (!window.q.attr) {
     q.attrs.opts.push({"name":"(kies iets)", "dis":true, "sel":true})
     q.ok = false;
@@ -179,24 +187,25 @@ function player_turn() {
     $('#current_player').replaceWith(template('q_tmpl', 
       {'side':'player', 'prop':prop, 'attr':attr}))
 
-    // opponent answers players question
-    var ans = false;
-    window.face[window.opponent_choice].attrs.forEach(function(a){
-      var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
-      if (match) { ans = true}
-    });
-    // show filtered faces
-    Object.keys(window.face).forEach(function(i){
-      var face_match = false;
-      window.face[i].attrs.forEach(function(a){
-        var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
-        if (match) { face_match = true }
-      }) 
-      if (face_match != ans) {
-        $('[data-i="'+i+'"] > .my-tick').css('visibility','visible');
-      }
-    })
     setTimeout(function(){
+      // opponent answers players question
+      var ans = false;
+      window.face[window.opponent_choice].attrs.forEach(function(a){
+        var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
+        if (match) { ans = true}
+      });
+      // show filtered faces
+      Object.keys(window.face).forEach(function(i){
+        var face_match = false;
+        window.face[i].attrs.forEach(function(a){
+          var match = (a.type == attr && (!prop || a.props.some(function(p){ return p==prop })))
+          if (match) { face_match = true }
+        }) 
+        if (face_match != ans) {
+          $('[data-i="'+i+'"] > .my-tick').css('background','red');
+        }
+      })
+    
       $('#conversation').append($('<div class="opponent">' + (ans? 'Ja' : 'Nee') + '</div>'));
       $('#conversation').stop().animate({
         scrollTop: $('#conversation')[0].scrollHeight
