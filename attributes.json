@@ -1,0 +1,25 @@
+{
+	"ogen": {
+		"p":1,
+		"options": [
+			{"props":["blauwe"]}, 
+			{"props":["groene"]}, 
+			{"props":["bruine"]}
+		]
+	},
+	"mond": {
+		"p":1,
+		"options": [
+			{"props":["blije"]}, 
+			{"props":["verdrietige"]}
+		]
+	},
+	"haar": {
+		"p": 0.5,
+		"options": [
+			{"props":["blond"]}, 
+			{"props":["bruin"]}, 
+			{"props":["zwart"]}
+		]
+	}
+}

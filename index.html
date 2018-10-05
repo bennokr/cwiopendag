@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="http://getskeleton.com/dist/css/normalize.css">
+        <link rel="stylesheet" href="http://getskeleton.com/dist/css/skeleton.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+
+        <script src="guesswho.js"></script>
+
+        <title>Wie is Het?</title>
+        <style>
+        #main { height:100%; }
+        #face_container {
+            position:absolute;
+            width:100%;
+            max-width:900px;
+            height: 66%;
+            overflow-y:scroll;
+        }
+        #conversation {
+            position:absolute;
+            top:66%;
+            height:33%;
+            overflow-y:scroll;
+            width:100%;
+            max-width:900px;
+            line-height:38px;
+        }
+        .grid {
+          display: grid;
+          grid-gap: 5px;
+          grid-template-columns: repeat(auto-fill, 186px);
+        }
+        .grid>* {
+          border: 1px solid black;
+        }
+        .grid ul {
+        	margin: .2em;
+            font-size:small;
+        }
+        .grid li {
+            margin: 0;
+        }
+        input,select { margin:0; }
+        input[disabled] {
+            background:grey;
+        }
+        input[disabled]:hover {
+            border: 1px solid #bbb;
+        }
+        .player { 
+            float:right;
+            clear:both; 
+            padding:0 .5em;
+            background: #cdc;
+            border:1px solid #aca;
+            border-radius:.5em;
+            box-shadow: 2px 2px 1px grey;
+        }
+        .opponent {
+            float:left; 
+            padding:0 .5em;
+            clear:both; 
+            background: #fed;
+            border:1px solid #cba; 
+            border-radius:.5em;
+            box-shadow: 2px 2px 1px grey;
+        }
+	    </style>
+
+        <script id="face_grid_tmpl" type="x-tmpl-mustache">
+    		<div class="grid">
+    			{{#.}}
+    			<div data-i="{{i}}">
+    				<ul>
+    					{{#attrs}}
+    					<li>{{#props}}{{.}}{{/props}} {{type}}</li>
+    					{{/attrs}}
+    				</ul>
+    			</div>
+    			{{/.}}
+    		</div>
+		</script>
+        <script id="player_tmpl" type="x-tmpl-mustache">
+            <div class="player" id="current_player">
+            Heeft 'ie
+            {{#props}}
+                <select id="prop_select">
+                    {{#opts}}
+                    <option name="{{name}}" {{#dis}}disabled{{/dis}} {{#sel}}selected{{/sel}}>{{name}}</option>
+                    {{/opts}}
+                </select>
+            {{/props}}
+            {{#attrs}}
+                <select id="attr_select">
+                    {{#opts}}
+                    <option name="{{name}}" {{#dis}}disabled{{/dis}} {{#sel}}selected{{/sel}}>{{name}}</option>
+                    {{/opts}}
+                </select>
+            {{/attrs}}
+            ?
+            {{#ok}}
+                <input type="button" id="vraag" value="Vraag"/>
+            {{/ok}}
+            </div>
+        </script>
+        <script id="opponent_tmpl" type="x-tmpl-mustache">
+            <div class="opponent" id="current_opponent">
+            Heeft 'ie {{.}}?
+            <input type="button" value="Ja" /> 
+            <input type="button" value="Nee" />
+            </div>
+        </script>
+		<script type="text/javascript">
+			$(function(){
+				init();
+			});
+		</script>
+    </head>
+    <body>
+        <div id="main">
+            <div id="face_container"></div>
+        	<div id="conversation">
+        		<div id="current_player"></div>
+        	</div>
+        </div>
+    </body>
+</html>
