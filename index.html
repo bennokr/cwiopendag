@@ -15,7 +15,7 @@
             height:100%;
         }
         #main {
-            max-width: 600px;
+            max-width: 620px;
             margin:0px auto;
             position: relative;
             width: 100%;
@@ -33,18 +33,15 @@
             overflow-y:scroll;
             line-height:38px;
         }
-        #conversation>div {
-            margin: 0 .5em;
-        }
         .grid {
           display: grid;
           margin: 0 auto;
           grid-gap: 5px;
-          grid-template-columns: repeat(auto-fill, 100px);
+          grid-template-columns: repeat(auto-fill, 150px);
         }
         .grid>* {
           border: 1px solid black;
-          height:100px;
+          height:150px;
         }
         .grid ul {
         	margin: .2em;
@@ -63,10 +60,14 @@
         input[disabled]:hover {
             border: 1px solid #bbb;
         }
+
+        #conversation>div {
+            margin: 0 .2em;
+        }
         .player { 
             float:right;
             clear:both; 
-            padding:0 .5em;
+            padding:0 .2em;
             background: #c7f2be;
             border:1px solid #aca;
             border-radius:.5em;
@@ -74,7 +75,7 @@
         }
         .opponent {
             float:left; 
-            padding:0 .5em;
+            padding:0 .2em;
             clear:both; 
             background: #fafbfc;
             border:1px solid #cba; 
@@ -105,6 +106,21 @@
         .my-tick {
             right:0px;
             border-top-left-radius: 10px;
+        }
+
+        @media only screen and (max-width: 620px) {
+            body {
+                font-size: 90%;
+            }
+            .grid {
+              grid-template-columns: repeat(auto-fill, 75px);
+            }
+            .grid>* {
+              height:75px;
+            }
+            .tick {
+              width:15px;height:15px;
+            }
         }
 	    </style>
 
