@@ -20,6 +20,7 @@ window.q = {};
 window.n = 12;
 
 window.opponent_choice = null;
+window.player_choice = null;
 
 function template(name, value) {
   var tmpl = $('#'+name).html();
@@ -69,12 +70,16 @@ function init() {
 
     $('#face_container').append(template('face_grid_tmpl', Object.values(window.face)));
 
-    $('.tick').on('click', function(e){
-      console.log(e.target);
-      $(e.target).css('background', 'green')
-    })
 
-    player_turn();
+    $('#conversation').append($('<div class="opponent">Kies maar iemand!</div>'));
+    $('.face').on('click', function(e){
+      window.player_choice =  $(e.target.parentNode).attr('data-i');
+      $('.you-tick', $(e.target.parentNode)).css('background', 'green');
+      $('.face').off('click');
+
+      $('#conversation').append($('<div id="current_player"></div>'));
+      player_turn();
+    })
   });
 }
 
@@ -115,7 +120,7 @@ function opponent_turn() {
 
     setTimeout(function(){
       $('#conversation').append(template('q_tmpl', 
-        {'side':'opponent', 'prop':prop, 'attr':attr} ));
+        {'side':'opponent', 'prop':prop, 'attr':attr, 'det':window.det[attr]} ));
       $('#conversation').append(template('opponent_tmpl', null ));
       $('#conversation').stop().animate({
         scrollTop: $('#conversation')[0].scrollHeight
@@ -127,6 +132,7 @@ function opponent_turn() {
 
           // Update game board
           // filter out faces without this att
+          var liar = false;
           Object.keys(window.face).forEach(function(i){
             var face_match = false;
             window.face[i].attrs.forEach(function(a){
@@ -136,15 +142,22 @@ function opponent_turn() {
             if (face_match != ans) {
               window.face_valid[i] = false;
               $('[data-i="'+i+'"] > .you-tick').css('background','red');
+              if (window.player_choice == i) {
+                liar = true;
+                $('#current_player').replaceWith($('<div class="opponent">Leugenaar!</div>'));
+                $('[data-i="'+i+'"] > .you-tick').css('background','purple');
+              }
             }
           })
-          $('#current_player').replaceWith($('<div class="player">' + (ans? 'Ja' : 'Nee') + '</div>'));  
-          $('#conversation').append($('<div id="current_player"></div>'));
-          $('#conversation').stop().animate({
-            scrollTop: $('#conversation')[0].scrollHeight
-          }, 80);
+          if (!liar) {
+            $('#current_player').replaceWith($('<div class="player">' + (ans? 'Ja' : 'Nee') + '</div>'));  
+            $('#conversation').append($('<div id="current_player"></div>'));
+            $('#conversation').stop().animate({
+              scrollTop: $('#conversation')[0].scrollHeight
+            }, 80);
 
-          player_turn();
+            player_turn();
+          }
         }, 750);
       })
     }, 750);
