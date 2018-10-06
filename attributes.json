@@ -19,14 +19,26 @@
 		"p": 0.5,
 		"options": [
 			{"img":"paars-haar.png", "props":["paars"]},
-			{"img":"oranje-haar.png", "props":["oranje"]}
+			{"img":"oranje-haar.png", "props":["oranje"]},
+			{"img":"hat.png", "props":["oranje"]}
 		]
 	},
 	"baard": {
-		"p": 0.5,
+		"p": 0.2,
 		"options": [
-			{"img":"groene-baard.png", "props":["groene"]}, 
+			{"img":"groene-baard.png", "props":["groene"]}
+		]
+	},
+	"snor": {
+		"p": 0.2,
+		"options": [
 			{"img":"mustache-baard.png", "props":["rode"]}
+		]
+	},
+	"hoed": {
+		"p": 0.2,
+		"options": [
+			{"img":"witte-hoed.png", "props":["witte"]}
 		]
 	}
 }
