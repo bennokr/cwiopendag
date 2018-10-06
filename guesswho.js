@@ -253,7 +253,7 @@ function player_turn() {
           if (match) { face_match = true }
         }) 
         if (face_match != ans) {
-          $('[data-i="'+i+'"] > .my-tick').css('background','rgb(128,128,128,0.5)');
+          $('[data-i="'+i+'"] > .my-tick').css('background','rgba(128,128,128,0.5)');
         }
       })
     
