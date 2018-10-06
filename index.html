@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
     <head>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,height=device-height initial-scale=1">
         <link rel="stylesheet" href="normalize.css">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -107,6 +108,11 @@
             right:0px;
             border-top-left-radius: 10px;
         }
+        .name {
+            position:absolute;bottom:0px; background: rgba(255, 255, 255, 0.5);; width:100%; height:20px;
+            text-align: center;
+            
+        }
 
         @media only screen and (max-width: 620px) {
             body {
@@ -129,6 +135,7 @@
     			{{#.}}
     			<div data-i="{{i}}"  class="face">
                     {{#attrs}}<img src="{{img}}" />{{/attrs}}
+                    <div class="name">{{name}}</div>
                     <div class="tick you-tick">&nbsp;</div>
                     <div class="tick my-tick">&nbsp;</div>
     			</div>
@@ -155,6 +162,10 @@
             ?
             {{#ok}}
                 <input type="button" id="vraag" value="Vraag"/>
+            {{/ok}}
+            {{^ok}}
+            of
+            <input type="button" id="raad" value="Raad"/>
             {{/ok}}
             </div>
         </script>

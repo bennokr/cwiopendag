@@ -22,6 +22,8 @@ window.n = 12;
 window.opponent_choice = null;
 window.player_choice = null;
 
+window.names = ['Isay','Hona','Remees','Yamil','Yonaro','Isa','Tijn','Zöe','Daniel','Thijs','Jesse','Noa','Bas','Gijs','Jan','Lieke','Julian','Teun','Amber','Tom','Mila','Thijmen','Robin','Tim','Ella','Siem','Noah','Niels','Maud','Anne','Roan','Benjamin','Floris','Guus','Hugo','Sarah','Pepijn','Anna','Faye','Milou','Thomas','Lotte','Owen','Justin','Lucas','Roos','Evelien','Jurre','David','Evi','Tygo','Quinten','Amy','Benthe','Luca','Joshua','Willem','Damiän','Dex'];
+
 function template(name, value) {
   var tmpl = $('#'+name).html();
   Mustache.parse(tmpl);
@@ -64,7 +66,12 @@ function init() {
         window.face_valid[i] = true;
       }
     }
-    Object.keys(window.face).forEach(function(i){ window.face[i].i = i; })
+    Object.keys(window.face).forEach(function(i){ 
+      window.face[i].i = i;
+      window.face[i].name = window.names[Math.floor(Math.random() * window.names.length)];
+      window.names.splice(window.names.indexOf( window.face[i].name ), 1);
+    })
+
     console.log('faces', window.face);
     console.log('attrs', window.attrs);
 
@@ -104,7 +111,12 @@ function opponent_turn() {
   if (n_game == 1) {
     
     // OPPONENT WINS
-    console.log('ik win')
+    var i = null;
+    Object.keys(window.face_valid).forEach(function(j){
+      if (window.face_valid[j]) { i=j; }
+    });
+    $('#conversation').append($('<div class="opponent">Ik win! Het is '+ window.face[i].name +'!</div>'));
+    $('#conversation').append($('<div class="opponent"><a href=".">Nog een keer spelen?</a></div>'));
 
   } else {
     Object.keys(propattr_counts).forEach(function(a){
@@ -158,9 +170,9 @@ function opponent_turn() {
 
             player_turn();
           }
-        }, 750);
+        }, 1000);
       })
-    }, 750);
+    }, 1000);
   }
 }
 
@@ -194,6 +206,31 @@ function player_turn() {
     player_turn();
   });
 
+  $('#conversation #raad').on('click', function(){
+    $('#current_player').replaceWith($('<div class="player" id="current_player">Is het...</div>'));
+    $('html').css('cursor', 'pointer');
+    $('.face').on('click', function(e){
+      $('html').css('cursor', '');
+      $(e.target.parentNode).off('click');
+      var guess = $(e.target.parentNode).attr('data-i');
+      $('#current_player').replaceWith($('<div class="player">Is het '+window.face[guess].name+'?</div>'));
+      $('#conversation').stop().animate({ scrollTop: $('#conversation')[0].scrollHeight }, 80);
+      setTimeout(function(){
+        if (guess == window.opponent_choice) {
+          // you won
+          $('#conversation').append($('<div class="opponent">Ja! Jij wint!</div>'));
+          $('#conversation').append($('<div class="opponent"><a href=".">Nog een keer spelen?</a></div>'));
+        } else {
+          // continue game
+          $('#conversation').append($('<div class="opponent">Nee, helaas!</div>'));
+          opponent_turn();
+        }
+        $('#conversation').stop().animate({ scrollTop: $('#conversation')[0].scrollHeight }, 80);
+      }, 1000);
+    })
+
+  });
+
   $('#conversation #vraag').on('click', function(){
     window.q = {};
     var prop = $('#prop_select').val(), attr = $('#attr_select').val();
@@ -220,10 +257,8 @@ function player_turn() {
       })
     
       $('#conversation').append($('<div class="opponent">' + (ans? 'Ja' : 'Nee') + '</div>'));
-      $('#conversation').stop().animate({
-        scrollTop: $('#conversation')[0].scrollHeight
-      }, 80);
+      $('#conversation').stop().animate({ scrollTop: $('#conversation')[0].scrollHeight }, 80);
       opponent_turn();
-    }, 750);
+    }, 1000);
   })
 }
