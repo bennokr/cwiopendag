@@ -2,7 +2,6 @@
 <html>
     <head>
         <link rel="stylesheet" href="normalize.css">
-        <link rel="stylesheet" href="skeleton.css">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
 
@@ -16,7 +15,6 @@
         #face_container {
             position:absolute;
             width:100%;
-            max-width:650px;
             height: 66%;
             overflow-y:scroll;
         }
@@ -35,6 +33,7 @@
         .grid {
           display: grid;
           grid-gap: 5px;
+          max-width:650px;
           grid-template-columns: repeat(auto-fill, 150px);
         }
         .grid>* {
