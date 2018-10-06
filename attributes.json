@@ -3,8 +3,8 @@
 		"p":1,
 		"options": [
 			{"img":"blauwe-ogen.png", "props":["blauwe"]}, 
-			{"img":"groene-ogen.png", "props":["groene"]}, 
-			{"img":"bruine-ogen.png", "props":["bruine"]}
+			{"img":"oranje-ogen.png", "props":["oranje"]}, 
+			{"img":"black-ogen.png", "props":["zwarte"]}
 		]
 	},
 	"mond": {
@@ -18,9 +18,15 @@
 	"haar": {
 		"p": 0.5,
 		"options": [
-			{"img":"blond-haar.png", "props":["blond"]}, 
-			{"img":"bruin-haar.png", "props":["bruin"]}, 
-			{"img":"zwart-haar.png", "props":["zwart"]}
+			{"img":"paars-haar.png", "props":["paars"]},
+			{"img":"oranje-haar.png", "props":["oranje"]}
+		]
+	},
+	"baard": {
+		"p": 0.5,
+		"options": [
+			{"img":"groene-baard.png", "props":["groene"]}, 
+			{"img":"mustache-baard.png", "props":["rode"]}
 		]
 	}
 }

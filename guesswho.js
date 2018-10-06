@@ -157,6 +157,7 @@ function opponent_turn() {
               if (window.player_choice == i) {
                 liar = true;
                 $('#current_player').replaceWith($('<div class="opponent">Leugenaar!</div>'));
+                $('#conversation').append($('<div class="opponent"><a href=".">Nog een keer spelen?</a></div>'));
                 $('[data-i="'+i+'"] > .you-tick').css('background','purple');
               }
             }
