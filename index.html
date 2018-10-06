@@ -9,22 +9,27 @@
 
         <title>Wie is Het?</title>
         <style>
-        body {
+        html, body {
             background: #ede7e0;
+            height:100%;
+        }
+        #main {
+            max-width: 600px;
+            margin:0px auto;
+            position: relative;
+            width: 100%;
+            height:100%;
         }
         #face_container {
             position:absolute;
-            width:100%;
-            height: 66%;
+            height: 66%; width:100%;
             overflow-y:scroll;
         }
         #conversation {
             position:absolute;
             top:66%;
-            height:33%;
+            height:33%; width:100%;
             overflow-y:scroll;
-            width:100%;
-            max-width:500px;
             line-height:38px;
         }
         #conversation>div {
@@ -32,9 +37,9 @@
         }
         .grid {
           display: grid;
+          margin: 0 auto;
           grid-gap: 5px;
-          max-width:650px;
-          grid-template-columns: repeat(auto-fill, 150px);
+          grid-template-columns: repeat(auto-fill, 140px);
         }
         .grid>* {
           border: 1px solid black;

@@ -3,6 +3,16 @@
     <head>
     	<link rel="stylesheet" href="normalize.css">
 		<style type="text/css">
+			html, body {
+			    height: 100%;
+			}
+			#main {
+				  position: relative;
+				  width: 100%;
+				  height:100%;
+				  max-width: 600px;
+				  margin: 0 auto;
+			}
 			#face_container {
 				position:absolute;
 	            width:100%;
@@ -16,6 +26,11 @@
 	            top:66%;
 	            background:green;
 			}
+			@media only screen and (max-width: 600px) {
+			    body {
+			        font-size: 30pt;
+			    }
+			}
 		</style>    	
     </head>
     <body>
@@ -23,7 +38,7 @@
             <div id="face_container">Faces</div>
         	<div id="conversation">
         		<div id="current_player">Text</div>
-        	</div>
+        	</div>&nbsp;
         </div>
     </body>
 </html>	
