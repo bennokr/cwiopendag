@@ -19,7 +19,8 @@
 		"p": 0.3,
 		"options": [
 			{"img":"paars-haar.png", "props":["paars"]},
-			{"img":"oranje-haar.png", "props":["oranje"]}
+			{"img":"oranje-haar.png", "props":["oranje"]},
+			{"img":"zwarte-haar.png", "props":["zwarte"]}
 		]
 	},
 	"baard": {
