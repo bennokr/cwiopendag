@@ -31,15 +31,21 @@
 		"det": "een"
 	},
 	"snor": {
-		"p": 0.4,
+		"p": 0.2,
 		"options": [
-			{"img":"mustache-baard.png", "props":["rode"]},
+			{"img":"mustache-baard.png", "props":["rode"]}
+		],
+		"det": "een"
+	},
+	"strik": {
+		"p":0.2,
+		"options": [
 			{"img":"zwarte-strik.png", "props":["zwarte"]}
 		],
 		"det": "een"
 	},
 	"hoed": {
-		"p": 0.2,
+		"p": 0.3,
 		"options": [
 			{"img":"witte-hoed.png", "props":["witte"]},
 			{"img":"oranje-hoed.png", "props":["oranje"]},
