@@ -27,14 +27,16 @@
 		"p": 0.2,
 		"options": [
 			{"img":"groene-baard.png", "props":["groene"]}
-		]
+		],
+		"det": "een"
 	},
 	"snor": {
 		"p": 0.4,
 		"options": [
 			{"img":"mustache-baard.png", "props":["rode"]},
 			{"img":"zwarte-strik.png", "props":["zwarte"]}
-		]
+		],
+		"det": "een"
 	},
 	"hoed": {
 		"p": 0.2,
@@ -42,6 +44,7 @@
 			{"img":"witte-hoed.png", "props":["witte"]},
 			{"img":"oranje-hoed.png", "props":["oranje"]},
 			{"img":"groene-hoed.png", "props":["groene"]}
-		]
+		],
+		"det": "een"
 	}
 }
